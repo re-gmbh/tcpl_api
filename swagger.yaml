@@ -1,718 +1,367 @@
----
-swagger: "2.0"
-info:
-  description: "This is a sample server Petstore server.  You can find out more about\
-    \ Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).\
-    \  For this sample, you can use the api key `special-key` to test the authorization\
-    \ filters."
-  version: "1.0.5"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
-tags:
-- name: "pet"
-  description: "Everything about your Pets"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
-- name: "store"
-  description: "Access to Petstore orders"
-- name: "user"
-  description: "Operations about user"
-  externalDocs:
-    description: "Find out more about our store"
-    url: "http://swagger.io"
-schemes:
-- "https"
-- "http"
-paths:
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-      - "pet"
-      summary: "uploads an image"
-      description: ""
-      operationId: "uploadFile"
-      consumes:
-      - "multipart/form-data"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to update"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    put:
-      tags:
-      - "pet"
-      summary: "Update an existing pet"
-      description: ""
-      operationId: "updatePet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-        405:
-          description: "Validation exception"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByStatus:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-          default: "available"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByTags:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Multiple tags can be provided with comma separated strings. Use\
-        \ tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid tag value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - api_key: []
-    post:
-      tags:
-      - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "updatePetWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the pet"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the pet"
-        required: false
-        type: "string"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    delete:
-      tags:
-      - "pet"
-      summary: "Deletes a pet"
-      description: ""
-      operationId: "deletePet"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "petId"
-        in: "path"
-        description: "Pet id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /store/order:
-    post:
-      tags:
-      - "store"
-      summary: "Place an order for a pet"
-      description: ""
-      operationId: "placeOrder"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid Order"
-  /store/order/{orderId}:
-    get:
-      tags:
-      - "store"
-      summary: "Find purchase order by ID"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.\
-        \ Other values will generated exceptions"
-      operationId: "getOrderById"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
-        required: true
-        type: "integer"
-        maximum: 10
-        minimum: 1
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-    delete:
-      tags:
-      - "store"
-      summary: "Delete purchase order by ID"
-      description: "For valid response try integer IDs with positive integer value.\
-        \ Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
-        required: true
-        type: "integer"
-        minimum: 1
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-  /store/inventory:
-    get:
-      tags:
-      - "store"
-      summary: "Returns pet inventories by status"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
-  /user/createWithArray:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithArrayInput"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/createWithList:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithListInput"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/{username}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user by user name"
-      description: ""
-      operationId: "getUserByName"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/User"
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
-    put:
-      tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        400:
-          description: "Invalid user supplied"
-        404:
-          description: "User not found"
-    delete:
-      tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
-      responses:
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
-  /user/login:
-    get:
-      tags:
-      - "user"
-      summary: "Logs user into the system"
-      description: ""
-      operationId: "loginUser"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          headers:
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-          schema:
-            type: "string"
-        400:
-          description: "Invalid username/password supplied"
-  /user/logout:
-    get:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters: []
-      responses:
-        default:
-          description: "successful operation"
-  /user:
-    post:
-      tags:
-      - "user"
-      summary: "Create user"
-      description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-securityDefinitions:
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "https://petstore.swagger.io/oauth/authorize"
-    flow: "implicit"
-    scopes:
-      read:pets: "read your pets"
-      write:pets: "modify pets in your account"
+basePath: /v1/tcpl
 definitions:
-  ApiResponse:
-    type: "object"
+  Calculation:
+    properties:
+      from:
+        example: "2021-10-11T10:50:00+02:00"
+        type: string
+      machines:
+        items:
+          $ref: '#/definitions/Machine'
+        type: array
+      orders:
+        items:
+          $ref: '#/definitions/Order'
+        type: array
+      until:
+        example: "2021-10-11T14:50:00+02:00"
+        type: string
+    type: object
+  CreateOrder:
+    properties:
+      id:
+        example: '#123AB'
+        type: string
+      machineId:
+        example: BF007
+        type: string
+      plannedStart:
+        example: "2021-10-11T10:00:00+02:00"
+        type: string
+    type: object
+  Error:
     properties:
       code:
-        type: "integer"
-        format: "int32"
-      type:
-        type: "string"
+        example: 400
+        type: integer
       message:
-        type: "string"
-  Category:
-    type: "object"
+        example: descriptive error message
+        type: string
+    type: object
+  Machine:
     properties:
       id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Category"
-  Pet:
-    type: "object"
-    required:
-    - "name"
-    - "photoUrls"
+        example: BF007
+        type: string
+      totals:
+        $ref: '#/definitions/Totals'
+    type: object
+  MachineIndex:
     properties:
       id:
-        type: "integer"
-        format: "int64"
-      category:
-        $ref: "#/definitions/Category"
-      name:
-        type: "string"
-        example: "doggie"
-      photoUrls:
-        type: "array"
-        xml:
-          wrapped: true
-        items:
-          type: "string"
-          xml:
-            name: "photoUrl"
-      tags:
-        type: "array"
-        xml:
-          wrapped: true
-        items:
-          xml:
-            name: "tag"
-          $ref: "#/definitions/Tag"
-      status:
-        type: "string"
-        description: "pet status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
-    xml:
-      name: "Pet"
-  Tag:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Tag"
+        example: BF007
+        type: string
+    type: object
   Order:
-    type: "object"
     properties:
       id:
-        type: "integer"
-        format: "int64"
-      petId:
-        type: "integer"
-        format: "int64"
-      quantity:
-        type: "integer"
-        format: "int32"
-      shipDate:
-        type: "string"
-        format: "date-time"
-      status:
-        type: "string"
-        description: "Order Status"
-        enum:
-        - "placed"
-        - "approved"
-        - "delivered"
-      complete:
-        type: "boolean"
-    xml:
-      name: "Order"
-  User:
-    type: "object"
+        example: '#123AB'
+        type: string
+      machineId:
+        example: BF007
+        type: string
+      plannedStart:
+        example: "2021-10-11T10:00:00+02:00"
+        type: string
+      startedAt:
+        example: "2021-10-11T10:50:04+02:00"
+        type: string
+    type: object
+  Totals:
     properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-      phone:
-        type: "string"
-      userStatus:
-        type: "integer"
-        format: "int32"
-        description: "User Status"
-    xml:
-      name: "User"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+      energy:
+        example: 115
+        type: number
+      energyUnit:
+        example: kWh
+        type: string
+      length:
+        example: 2124
+        type: number
+      lengthUnit:
+        example: m
+        type: string
+      materialConsumption:
+        example: 355
+        type: number
+      materialConsumptionExtruder1:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder1Component1:
+        type: number
+      materialConsumptionExtruder1Component2:
+        type: number
+      materialConsumptionExtruder1Component3:
+        type: number
+      materialConsumptionExtruder1Component4:
+        type: number
+      materialConsumptionExtruder1Component5:
+        type: number
+      materialConsumptionExtruder1Component6:
+        type: number
+      materialConsumptionExtruder2:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder2Component1:
+        type: number
+      materialConsumptionExtruder2Component2:
+        type: number
+      materialConsumptionExtruder2Component3:
+        type: number
+      materialConsumptionExtruder2Component4:
+        type: number
+      materialConsumptionExtruder2Component5:
+        type: number
+      materialConsumptionExtruder2Component6:
+        type: number
+      materialConsumptionExtruder3:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder3Component1:
+        type: number
+      materialConsumptionExtruder3Component2:
+        type: number
+      materialConsumptionExtruder3Component3:
+        type: number
+      materialConsumptionExtruder3Component4:
+        type: number
+      materialConsumptionExtruder3Component5:
+        type: number
+      materialConsumptionExtruder3Component6:
+        type: number
+      materialConsumptionExtruder4:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder4Component1:
+        type: number
+      materialConsumptionExtruder4Component2:
+        type: number
+      materialConsumptionExtruder4Component3:
+        type: number
+      materialConsumptionExtruder4Component4:
+        type: number
+      materialConsumptionExtruder4Component5:
+        type: number
+      materialConsumptionExtruder4Component6:
+        type: number
+      materialConsumptionExtruder5:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder5Component1:
+        type: number
+      materialConsumptionExtruder5Component2:
+        type: number
+      materialConsumptionExtruder5Component3:
+        type: number
+      materialConsumptionExtruder5Component4:
+        type: number
+      materialConsumptionExtruder5Component5:
+        type: number
+      materialConsumptionExtruder5Component6:
+        type: number
+      materialConsumptionExtruder6:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder6Component1:
+        type: number
+      materialConsumptionExtruder6Component2:
+        type: number
+      materialConsumptionExtruder6Component3:
+        type: number
+      materialConsumptionExtruder6Component4:
+        type: number
+      materialConsumptionExtruder6Component5:
+        type: number
+      materialConsumptionExtruder6Component6:
+        type: number
+      materialConsumptionExtruder7:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder7Component1:
+        type: number
+      materialConsumptionExtruder7Component2:
+        type: number
+      materialConsumptionExtruder7Component3:
+        type: number
+      materialConsumptionExtruder7Component4:
+        type: number
+      materialConsumptionExtruder7Component5:
+        type: number
+      materialConsumptionExtruder7Component6:
+        type: number
+      materialConsumptionExtruder8:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder8Component1:
+        type: number
+      materialConsumptionExtruder8Component2:
+        type: number
+      materialConsumptionExtruder8Component3:
+        type: number
+      materialConsumptionExtruder8Component4:
+        type: number
+      materialConsumptionExtruder8Component5:
+        type: number
+      materialConsumptionExtruder8Component6:
+        type: number
+      materialConsumptionExtruder9:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder9Component1:
+        type: number
+      materialConsumptionExtruder9Component2:
+        type: number
+      materialConsumptionExtruder9Component3:
+        type: number
+      materialConsumptionExtruder9Component4:
+        type: number
+      materialConsumptionExtruder9Component5:
+        type: number
+      materialConsumptionExtruder9Component6:
+        type: number
+      materialConsumptionExtruder10:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder10Component1:
+        type: number
+      materialConsumptionExtruder10Component2:
+        type: number
+      materialConsumptionExtruder10Component3:
+        type: number
+      materialConsumptionExtruder10Component4:
+        type: number
+      materialConsumptionExtruder10Component5:
+        type: number
+      materialConsumptionExtruder10Component6:
+        type: number
+      materialConsumptionExtruder11:
+        example: 32.27
+        type: number
+      materialConsumptionExtruder11Component1:
+        type: number
+      materialConsumptionExtruder11Component2:
+        type: number
+      materialConsumptionExtruder11Component3:
+        type: number
+      materialConsumptionExtruder11Component4:
+        type: number
+      materialConsumptionExtruder11Component5:
+        type: number
+      materialConsumptionExtruder11Component6:
+        type: number
+      materialConsumptionUnit:
+        example: kg
+        type: string
+      runTime:
+        example: 4
+        type: number
+      runTimeUnit:
+        example: h
+        type: string
+    type: object
+host: localhost:1323
+info:
+  contact:
+    email: robert.sliwinski@re-digital.io
+    name: Robert Sliwinski
+    url: http://r-ecosystem.de
+  description: API for the ERP system to query the c.Hub for production parameters
+    of each machine.
+  termsOfService: http://r-ecosystem.de
+  title: TCPL API
+  version: "0.1"
+paths:
+  /calculations:
+    get:
+      consumes:
+      - application/json
+      description: Returns an object of calculations for a certain time period
+      operationId: get-calculations
+      parameters:
+      - example: "2021-10-11T10:50:00+02:00"
+        in: query
+        name: from
+        type: string
+      - example: "2021-10-11T14:50:00+02:00"
+        in: query
+        name: until
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calculation for a time period
+          schema:
+            $ref: '#/definitions/Calculation'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Get calculations for a specific time period
+      tags:
+      - Calculations
+  /machines:
+    get:
+      consumes:
+      - application/json
+      description: Returns an array of all known machines from the time-series database
+      operationId: get-machines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: An collection of machines
+          schema:
+            items:
+              $ref: '#/definitions/MachineIndex'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Get all machines
+      tags:
+      - Machines
+  /order:
+    post:
+      consumes:
+      - application/json
+      description: Create an order inside the machines HMI
+      operationId: post-order
+      parameters:
+      - description: Create an Order Object
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/CreateOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Inserted Order
+          schema:
+            $ref: '#/definitions/CreateOrder'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Create order in machines HMI
+      tags:
+      - Order
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
