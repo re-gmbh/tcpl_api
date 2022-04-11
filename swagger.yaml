@@ -1,6 +1,16 @@
 basePath: /v1/tcpl
 definitions:
-  Calculation:
+  CalculationOrder:
+    properties:
+      machines:
+        items:
+          $ref: '#/definitions/Machine'
+        type: array
+      order:
+        example: Order_ID
+        type: string
+    type: object
+  CalculationTime:
     properties:
       from:
         example: "2021-10-11T10:50:00+02:00"
@@ -52,6 +62,12 @@ definitions:
         example: BF007
         type: string
     type: object
+  Material:
+    properties:
+      materialname:
+        example: 32.27
+        type: number
+    type: object
   Order:
     properties:
       id:
@@ -88,167 +104,167 @@ definitions:
         example: 32.27
         type: number
       materialConsumptionExtruder1Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder1Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder1Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder1Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder1Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder1Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder2:
         example: 32.27
         type: number
       materialConsumptionExtruder2Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder2Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder2Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder2Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder2Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder2Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder3:
         example: 32.27
         type: number
       materialConsumptionExtruder3Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder3Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder3Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder3Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder3Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder3Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder4:
         example: 32.27
         type: number
       materialConsumptionExtruder4Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder4Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder4Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder4Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder4Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder4Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder5:
         example: 32.27
         type: number
       materialConsumptionExtruder5Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder5Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder5Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder5Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder5Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder5Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder6:
         example: 32.27
         type: number
       materialConsumptionExtruder6Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder6Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder6Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder6Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder6Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder6Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder7:
         example: 32.27
         type: number
       materialConsumptionExtruder7Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder7Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder7Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder7Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder7Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder7Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder8:
         example: 32.27
         type: number
       materialConsumptionExtruder8Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder8Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder8Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder8Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder8Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder8Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder9:
         example: 32.27
         type: number
       materialConsumptionExtruder9Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder9Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder9Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder9Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder9Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder9Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder10:
         example: 32.27
         type: number
       materialConsumptionExtruder10Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder10Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder10Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder10Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder10Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder10Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder11:
         example: 32.27
         type: number
       materialConsumptionExtruder11Component1:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder11Component2:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder11Component3:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder11Component4:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder11Component5:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionExtruder11Component6:
-        type: number
+        $ref: '#/definitions/Material'
       materialConsumptionUnit:
         example: kg
         type: string
@@ -271,7 +287,7 @@ info:
   title: TCPL API
   version: "0.1"
 paths:
-  /calculations:
+  /calculation/time:
     get:
       consumes:
       - application/json
@@ -292,7 +308,7 @@ paths:
         "200":
           description: Calculation for a time period
           schema:
-            $ref: '#/definitions/Calculation'
+            $ref: '#/definitions/CalculationTime'
         "400":
           description: Bad request
           schema:
@@ -303,7 +319,36 @@ paths:
             $ref: '#/definitions/Error'
       summary: Get calculations for a specific time period
       tags:
-      - Calculations
+      - CalculationsTime
+  /calculations/order:
+    get:
+      consumes:
+      - application/json
+      description: Returns an object of calculations for a certain time period
+      operationId: get-calculations_order
+      parameters:
+      - example: Order_ID
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calculation for a time period
+          schema:
+            $ref: '#/definitions/CalculationOrder'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Get calculations for a specific time period
+      tags:
+      - CalculationsOrder
   /machines:
     get:
       consumes:
