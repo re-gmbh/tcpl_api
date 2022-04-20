@@ -406,6 +406,28 @@ paths:
       summary: Create order in machines HMI
       tags:
       - Order
+  /roll:
+    get:
+      consumes:
+      - application/json
+      description: Get Roll from DB as CSV
+      operationId: get-rolls
+      produces:
+      - text/csv
+      responses:
+        "201":
+          description: CSV Response
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Get Roll from DB
+      tags:
+      - Roll
 securityDefinitions:
   BasicAuth:
     type: basic
